@@ -22,3 +22,9 @@ API = tweepy.API(authentication)
 with open("twitter.json") as file:
     jsonData = json.load(file)
 
+for user in jsonData["userTag"]:
+    tweets = API.user_timeline(user)
+    for tweet in tweets:
+        for query in jsonData["query"]:
+            if query in tweet:
+                print(tweet)
