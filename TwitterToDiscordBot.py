@@ -19,7 +19,7 @@ def main():
     tweets = []
     running = True
     
-    while running <= 2:
+    while running:
         for user in jsonData["userTag"]:
             print(user)
             for query in jsonData["query"]:
