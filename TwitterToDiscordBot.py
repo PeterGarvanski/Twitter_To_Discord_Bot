@@ -2,11 +2,23 @@ import snscrape.modules.twitter as scraper
 import json
 import datetime
 import re
+import configparser
+import requests
 
 def main():
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+
+    url = config["discord"]["api_url"]
+    auth = {"Authorization": config["discord"]["authentication"]}
+
+    msg = {
+        "content": "This was sent using a python script!"
+    }
+
     with open("twitter.json") as file:
         jsonData = json.load(file)
-    
+
     time = datetime.datetime.now() - datetime.timedelta(minutes=30)
     currentDate = re.search(r"(\d{2}):(\d{2}):(\d{2})", str(time))
     
@@ -32,6 +44,7 @@ def main():
                     tweetTime = (h * 3600) + (m * 60) + s
                     if tweetTime > customTime:
                         print(tweet.url)
+                        requests.post(url, headers=auth, data=msg)
 
         if len(tweets) > 0:
             running = False
